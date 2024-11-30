@@ -27,6 +27,7 @@ export type TOrder = {
 };
 
 export type TOrdersData = {
+  length: any;
   orders: TOrder[];
   total: number;
   totalToday: number;
