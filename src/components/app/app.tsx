@@ -20,7 +20,6 @@ import { ProtectedRoute } from '../protected-route/protected-route';
 import { useEffect } from 'react';
 import { getIngredients } from '../../services/Slices/ingredientsSlice';
 import { getUser } from '../../services/Slices/userSlice';
-
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -103,7 +102,10 @@ const App = () => {
           <Route
             path='/feed/:number'
             element={
-              <Modal title={'Детали заказа'} onClose={() => navigate(-1)}>
+              <Modal
+                title={`#${location.pathname.match(/\d+/)}`}
+                onClose={() => navigate(-1)}
+              >
                 <OrderInfo />
               </Modal>
             }
@@ -119,7 +121,10 @@ const App = () => {
           <Route
             path='/profile/orders/:number'
             element={
-              <Modal title={'Детали заказа'} onClose={() => navigate(-1)}>
+              <Modal
+                title={`#${location.pathname.match(/\d+/)}`}
+                onClose={() => navigate(-1)}
+              >
                 <ProtectedRoute>
                   <OrderInfo />
                 </ProtectedRoute>

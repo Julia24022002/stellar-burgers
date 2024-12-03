@@ -13,10 +13,10 @@ export const initialState: TOrdersState = {
   error: null
 };
 
-export const getOrdersList = createAsyncThunk(
-  'orderList/getOrdersList',
-  async () => getOrdersApi()
-);
+export const getOrdersList = createAsyncThunk('orders/getOrders', async () => {
+  const orders = await getOrdersApi();
+  return orders;
+});
 
 // слайс
 export const orderListSlice = createSlice({
@@ -30,7 +30,6 @@ export const orderListSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getOrdersList.pending, (state) => {
-        state.orders = [];
         state.error = null;
       })
 

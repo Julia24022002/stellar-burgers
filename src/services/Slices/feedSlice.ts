@@ -3,22 +3,23 @@ import { TOrder } from '@utils-types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export interface IFeedState {
-  orders: TOrder[];
+  feeds: TOrder[];
   total: number | null;
   totalToday: number | null;
   error: string | null;
 }
 
 export const initialState: IFeedState = {
-  orders: [],
+  feeds: [],
   total: null,
   totalToday: null,
   error: null
 };
 
-export const getFeeds = createAsyncThunk('feed/fetchFeed', async () =>
-  getFeedsApi()
-);
+export const getFeeds = createAsyncThunk('orders/getFeeds', async () => {
+  const response = await getFeedsApi();
+  return response;
+});
 
 // слайс
 export const feedsSlice = createSlice({
@@ -26,14 +27,14 @@ export const feedsSlice = createSlice({
   initialState,
   reducers: {},
   selectors: {
-    selectOrdersState: (state) => state.orders,
-    selectOrdersTotal: (state) => state.total,
-    selectOrdersTotalToday: (state) => state.totalToday
+    selectFeedsState: (state) => state.feeds,
+    selectFeedsTotal: (state) => state.total,
+    selectFeedsTotalToday: (state) => state.totalToday
   },
   extraReducers: (builder) => {
     builder
       .addCase(getFeeds.pending, (state) => {
-        state.orders = [];
+        state.feeds = [];
         state.total = null;
         state.totalToday = null;
         state.error = null;
@@ -44,12 +45,12 @@ export const feedsSlice = createSlice({
       })
 
       .addCase(getFeeds.fulfilled, (state, action) => {
-        state.orders = action.payload.orders;
+        state.feeds = action.payload.orders;
         state.total = action.payload.total;
         state.totalToday = action.payload.totalToday;
       });
   }
 });
 export const feedReducer = feedsSlice.reducer;
-export const { selectOrdersState, selectOrdersTotal, selectOrdersTotalToday } =
+export const { selectFeedsState, selectFeedsTotal, selectFeedsTotalToday } =
   feedsSlice.selectors;

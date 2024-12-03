@@ -3,31 +3,33 @@ import { orderBurgerApi, getOrderByNumberApi } from '../../utils/burger-api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 //тип начальное состояние
-type TOrderState = {
+export interface TOrderState {
   order: TOrder | null;
   orderRequest: boolean;
-};
+  error: string | null;
+}
 
 //   нач состояние
 export const initialState: TOrderState = {
   order: null,
-  orderRequest: false
+  orderRequest: false,
+  error: null
 };
 
 export const orderBurger = createAsyncThunk(
   'order/orderBurger',
   async (data: string[], { dispatch }) => {
-    dispatch(clearOrder());
     const dataOrder = await orderBurgerApi(data);
+    dispatch(clearOrder());
     return dataOrder;
   }
 );
 
-export const getOrderByNumber = createAsyncThunk(
-  'order/getOrderByNumber',
-  async (numberOrder: number, { dispatch }) => {
-    dispatch(clearOrder());
-    return getOrderByNumberApi(numberOrder);
+export const orderByNumber = createAsyncThunk(
+  'order/orderByNumber',
+  async (number: number) => {
+    const response = await getOrderByNumberApi(number);
+    return response;
   }
 );
 
@@ -36,7 +38,9 @@ export const orderSlice = createSlice({
   name: 'order',
   initialState,
   reducers: {
-    clearOrder: (state) => (state = initialState)
+    clearOrder: (state) => {
+      state.order = null;
+    }
   },
   selectors: {
     selectOrder: (state) => state.order,
@@ -46,15 +50,27 @@ export const orderSlice = createSlice({
     builder
       .addCase(orderBurger.pending, (state) => {
         state.orderRequest = true;
+        state.error = null;
       })
-
       .addCase(orderBurger.rejected, (state, action) => {
         state.orderRequest = false;
+        state.error = action.error.message || 'Ошибка получения данных';
       })
-
       .addCase(orderBurger.fulfilled, (state, action) => {
         state.orderRequest = false;
         state.order = action.payload.order;
+      })
+      .addCase(orderByNumber.pending, (state) => {
+        state.orderRequest = true;
+        state.error = null;
+      })
+      .addCase(orderByNumber.fulfilled, (state, action) => {
+        state.orderRequest = false;
+        state.order = action.payload.orders[0];
+      })
+      .addCase(orderByNumber.rejected, (state, action) => {
+        state.orderRequest = false;
+        state.error = action.error.message || 'Ошибка создания заказа';
       });
   }
 });
