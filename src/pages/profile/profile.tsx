@@ -10,8 +10,8 @@ export const Profile: FC = () => {
   const dispatch = useDispatch();
 
   const [formValue, setFormValue] = useState({
-    name: user?.name!,
-    email: user?.email!,
+    name: user?.name || '',
+    email: user?.email || '',
     password: ''
   });
 
@@ -19,7 +19,8 @@ export const Profile: FC = () => {
     setFormValue((prevState) => ({
       ...prevState,
       name: user?.name || '',
-      email: user?.email || ''
+      email: user?.email || '',
+      password: ''
     }));
   }, [user]);
 

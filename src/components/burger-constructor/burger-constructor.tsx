@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useEffect } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useSelector, useDispatch } from '../../services/store';
@@ -27,10 +27,18 @@ export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    dispatch(clearConstructor());
+    dispatch(clearOrder());
+  }, [dispatch]);
+
   const onOrderClick = () => {
     if (!isAuthChecked) {
       navigate('/login');
-    } else if (constructorItems.bun && constructorItems.ingredients) {
+    } else if (
+      constructorItems.bun &&
+      constructorItems.ingredients.length > 0
+    ) {
       const order = [
         constructorItems.bun._id,
         ...constructorItems.ingredients.map((ingredient) => ingredient._id),

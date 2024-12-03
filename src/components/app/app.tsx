@@ -20,6 +20,7 @@ import { ProtectedRoute } from '../protected-route/protected-route';
 import { useEffect } from 'react';
 import { getIngredients } from '../../services/Slices/ingredientsSlice';
 import { getUser } from '../../services/Slices/userSlice';
+import { IngredientDetailsPage } from '../Ingredient-details-page/Ingredient-details-page';
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -36,9 +37,9 @@ const App = () => {
       <AppHeader />
       <Routes location={background || location}>
         <Route path='/' element={<ConstructorPage />} />
-        <Route path='/ingredients/:id' element={<IngredientDetails />} />
         <Route path='/feed' element={<Feed />} />
         <Route path='/feed/:number' element={<OrderInfo />} />
+        <Route path='/ingredients/:id' element={<IngredientDetailsPage />} />
         <Route
           path='/login'
           element={

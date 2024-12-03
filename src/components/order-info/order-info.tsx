@@ -18,7 +18,7 @@ export const OrderInfo: FC = () => {
     if (number) {
       dispatch(orderByNumber(Number(number)));
     }
-  }, [dispatch, number]);
+  }, [dispatch]);
 
   /* им данные для отображения */
   const orderInfo = useMemo(() => {
