@@ -21,6 +21,7 @@ import { useEffect } from 'react';
 import { getIngredients } from '../../services/Slices/ingredientsSlice';
 import { getUser } from '../../services/Slices/userSlice';
 import { IngredientDetailsPage } from '../Ingredient-details-page/Ingredient-details-page';
+import { OrderInfoPage } from '../order-info-page/order-info-page';
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -38,8 +39,10 @@ const App = () => {
       <Routes location={background || location}>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
-        <Route path='/feed/:number' element={<OrderInfo />} />
+        <Route path='/feed/:number' element={<OrderInfoPage />} />
         <Route path='/ingredients/:id' element={<IngredientDetailsPage />} />
+        <Route path='/profile/orders/:number' element={<OrderInfoPage />} />
+
         <Route
           path='/login'
           element={

@@ -28,7 +28,7 @@ export const BurgerConstructor: FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(clearConstructor());
+    // dispatch(clearConstructor());
     dispatch(clearOrder());
   }, [dispatch]);
 
