@@ -7,12 +7,16 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from '../../services/store';
 import { orderByNumber, selectOrder } from '../../services/Slices/orderSlice';
 import { selectIngredients } from '../../services/Slices/ingredientsSlice';
+import styles from './order-info-page.module.css';
+import { useLocation } from 'react-router-dom';
 
-export const OrderInfo: FC = () => {
+export const OrderInfoPage: FC = () => {
   const orderData = useSelector(selectOrder);
   const ingredients: TIngredient[] = useSelector(selectIngredients);
   const dispatch = useDispatch();
   const { number } = useParams();
+  const location = useLocation();
+  const orderId = location.pathname.match(/\d+/);
 
   useEffect(() => {
     if (number) {
@@ -66,5 +70,10 @@ export const OrderInfo: FC = () => {
     return <Preloader />;
   }
 
-  return <OrderInfoUI orderInfo={orderInfo} />;
+  return (
+    <div className={styles.wrapper}>
+      <h3 className='text text_type_main-medium  pb-3 pt-10'>#{orderId}</h3>
+      <OrderInfoUI orderInfo={orderInfo} />;{' '}
+    </div>
+  );
 };

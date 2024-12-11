@@ -4,9 +4,9 @@ import { IngredientDetailsUI } from '../ui/ingredient-details';
 import { useParams } from 'react-router-dom';
 import { selectIngredients } from '../../services/Slices/ingredientsSlice';
 import { useSelector } from '../../services/store';
+import styles from './Ingredient-details-page.module.css';
 
-export const IngredientDetails: FC = () => {
-  /** TODO: взять переменную из стора */
+export const IngredientDetailsPage: FC = () => {
   const { id } = useParams();
   const ingredientData = useSelector(selectIngredients).find(
     (ingredient) => ingredient._id === id
@@ -15,6 +15,10 @@ export const IngredientDetails: FC = () => {
   if (!ingredientData) {
     return <Preloader />;
   }
-
-  return <IngredientDetailsUI ingredientData={ingredientData} />;
+  return (
+    <div className={styles.wrapper}>
+      <h3 className='text text_type_main-large mb-4'>Детали ингредиента</h3>
+      <IngredientDetailsUI ingredientData={ingredientData} />
+    </div>
+  );
 };
