@@ -6,6 +6,7 @@ export interface IFeedState {
   feeds: TOrder[];
   total: number | null;
   totalToday: number | null;
+  isLoading: boolean;
   error: string | null;
 }
 
@@ -13,6 +14,7 @@ export const initialState: IFeedState = {
   feeds: [],
   total: null,
   totalToday: null,
+  isLoading: false,
   error: null
 };
 
@@ -34,20 +36,19 @@ export const feedsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getFeeds.pending, (state) => {
-        state.feeds = [];
-        state.total = null;
-        state.totalToday = null;
+        state.isLoading = true;
         state.error = null;
       })
-
       .addCase(getFeeds.rejected, (state, action) => {
+        state.isLoading = false;
         state.error = action.error.message || 'Ошибка получения данных';
       })
-
       .addCase(getFeeds.fulfilled, (state, action) => {
+        state.isLoading = false;
         state.feeds = action.payload.orders;
         state.total = action.payload.total;
         state.totalToday = action.payload.totalToday;
+        state.error = null;
       });
   }
 });
